@@ -6,6 +6,7 @@
 /storage/*.key
 /storage/pail
 /vendor
+proyecto_final.code-workspace
 .env
 .env.backup
 .env.production
