@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Api\ProductController;
-use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -18,6 +18,11 @@ use App\Models\Category;
     ]);
 });*/
 
+
+// Ruta para crear un producto
+Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+Route::get('/dashboard', [ProductController::class, 'create'])->middleware(['auth', 'verified'])->name('dashboard');
+
 Route::get('/', function () {
     $products = Product::all();
     $categories = Category::all();
@@ -25,6 +30,29 @@ Route::get('/', function () {
     return Inertia::render('Home', [
         'products' => $products,
         'categories' => $categories,
+    ]);
+});
+
+// Redirigir /products a la página principal
+Route::get('/products', function () {
+    return redirect('/');
+});
+
+// Mostrar categorías en una página React
+Route::get('/categories', function () {
+    $categories = Category::all();
+
+    return Inertia::render('Categories', [
+        'categories' => $categories,
+    ]);
+});
+
+// Mostrar un producto específico basado en su slug
+Route::get('/products/{slug}', function ($slug) {
+    $product = Product::where('slug', $slug)->firstOrFail();
+
+    return Inertia::render('Product', [
+        'product' => $product,
     ]);
 });
 

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('description');
             $table->decimal('price', 8, 2);
             $table->integer('stock');
-            $table->date('release_date');
+            $table->date('release_date')->nullable();
             $table->string('slug')->unique();
             $table->foreignId('category_id')->constrained()->onDelete('cascade'); // Relación uno a muchos con categories
             $table->timestamps();
